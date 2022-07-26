@@ -182,8 +182,14 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    const val = str.charAt(i);
+    if (str.indexOf(val) === str.lastIndexOf(val)) {
+      return val;
+    }
+  }
+  return null;
 }
 
 
@@ -226,8 +232,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -243,8 +249,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(num.toString().split('').reverse().join(''), 10);
 }
 
 
@@ -268,8 +274,28 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let sum = 0;
+  let flag = 1;
+
+  for (let i = ccn.toString().length - 1; i >= 0; i -= 1) {
+    let calc = 0;
+    calc = Number(ccn.toString().charAt(i)) * flag;
+
+    if (calc > 9) {
+      sum += 1;
+      calc -= 10;
+    }
+
+    sum += calc;
+
+    if (flag === 1) {
+      flag = 2;
+    } else {
+      flag = 1;
+    }
+  }
+  return (sum % 10) === 0;
 }
 
 /**
@@ -286,8 +312,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = num.toString().split('').map((val) => Number(val));
+  let red = arr.reduce((sum, el) => sum + el, 0);
+  if (red > 9) {
+    red = red.toString().split('').map((val) => Number(val)).reduce((sum, el) => sum + el, 0);
+    return red;
+  }
+  return red;
 }
 
 
@@ -312,8 +344,21 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const copyBr = '[](){}<>';
+
+  const check = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    const indexOfBr = copyBr.indexOf(str[i]);
+
+    if (indexOfBr % 2 === 0) {
+      check.push(indexOfBr + 1);
+    } else if (check.pop() !== indexOfBr) {
+      return false;
+    }
+  }
+  return check.length === 0;
 }
 
 
